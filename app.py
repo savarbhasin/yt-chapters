@@ -9,8 +9,8 @@ from langchain_openai import ChatOpenAI
 
 st.title("YouTube Video Chapter Generator")
 
-# model = ChatGroq(model="llama3-70b-8192")
-model = ChatOpenAI(model="gpt-4o")
+model = ChatGroq(model="llama3-70b-8192")
+# model = ChatOpenAI(model="gpt-4o")
 
 def get_video_id(url):
     video_id = re.search(r'(?:v=|\/)([0-9A-Za-z_-]{11}).*', url)
