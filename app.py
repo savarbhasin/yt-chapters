@@ -39,7 +39,6 @@ def format_time(seconds):
 def process_chunk(title,chunk, chunk_index, total_chunks, chunk_start_time, chunk_end_time):
     chain = prompt | model
     response = chain.invoke({
-        "title":title,
         "chunk": chunk,
         "chunk_index": chunk_index,
         "total_chunks": total_chunks,
@@ -87,7 +86,7 @@ if st.button("Generate Chapters"):
                 "Based on the provided transcript chunk, generate a concise and relevant chapter title. "
                 "Return 'None' if there isn't a significant topic shift or noteworthy content in this segment. "
                 "Only return the chapter title without quotation marks. No need for additional details. "
-                "The given video is about {title}. "
+                # "The given video is about {title}. "
                 "The first chapter title should start from the beginning of the video. If the first chunk doesn't contain a significant topic shift, return one of the following Introduction or Context for the Video, or Upcoming in the video. "
                 "Consider the following details: "
                 "This is chunk {chunk_index} of {total_chunks}, covering the time from {chunk_start_time} to {chunk_end_time}. "
@@ -102,7 +101,6 @@ if st.button("Generate Chapters"):
             with ThreadPoolExecutor() as executor:
                 future_to_chunk = {executor.submit(
                     process_chunk, 
-                    title,
                     chunk, 
                     i, 
                     len(documents),
