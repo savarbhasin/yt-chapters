@@ -6,11 +6,16 @@ from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
+from pytubefix import YouTube
+
+
 
 st.title("YouTube Video Chapter Generator")
 
 model = ChatGroq(model="llama3-70b-8192")
-# model = ChatOpenAI(model="gpt-4o")
+
+
+radio = st.radio("Select model:", ["GPT-4o", "Llama3-70b"], index=1)
 
 def get_video_id(url):
     video_id = re.search(r'(?:v=|\/)([0-9A-Za-z_-]{11}).*', url)
@@ -22,9 +27,10 @@ def format_time(seconds):
     seconds = int(seconds % 60)
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def process_chunk(chunk, chunk_index, total_chunks, chunk_start_time, chunk_end_time):
+def process_chunk(title,chunk, chunk_index, total_chunks, chunk_start_time, chunk_end_time):
     chain = prompt | model
     response = chain.invoke({
+        "title":title,
         "chunk": chunk,
         "chunk_index": chunk_index,
         "total_chunks": total_chunks,
@@ -33,18 +39,31 @@ def process_chunk(chunk, chunk_index, total_chunks, chunk_start_time, chunk_end_
     })
     return response.content
 
+st.text("Sample Video URL")
+st.code("https://www.youtube.com/watch?v=vCPKIw43NFU", language="string")
+
 url = st.text_input("Enter YouTube video URL:")
 
-if url:
+if radio == "GPT-4o":
+    openapi_key = st.text_input("For GPT-4o model, please enter your OpenAI API key:", type="password")
+    model = ChatOpenAI(model="gpt-4o", api_key=openapi_key)
+
+
+if st.button("Generate Chapters"):
+    if radio == "GPT-4o" and not openapi_key:
+        st.error("Please enter your OpenAI API key.")
+        st.stop()
     video_id = get_video_id(url)
     if video_id:
+        yt = YouTube(url)
+        title = yt.title
         try:
             transcript = yta.get_transcript(video_id, languages=['en', 'hi'])
             
             data = [t['text'] for t in transcript]
             times = [t['start'] for t in transcript]
             
-            video_duration = times[-1] + transcript[-1]['duration']
+            video_duration = times[-1]
             
             text = " ".join(data)
             
@@ -54,22 +73,13 @@ if url:
             splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=200)
             documents = splitter.split_text(text)
             
-            # prompt = PromptTemplate.from_template(
-            #     "You are an expert in making chapters for YouTube videos. "
-            #     "Given a chunk of the transcript of a YouTube video, create a chapter title for this part of the video. "
-            #     "Only return the chapter title. No description needed. "
-            #     "The chapter should be meaningful and concise. "
-            #     "If there's no significant topic change or important content in this chunk, return 'None'. "
-            #     "Consider the position of this chunk in the overall video: "
-            #     "Chunk {chunk_index} out of {total_chunks}. "
-            #     "This chunk starts at {chunk_start_time} and ends at {chunk_end_time}. "
-            #     "Here's the transcript chunk: {chunk}"
-            # )
             prompt = PromptTemplate.from_template(
-                "You are a seasoned expert in creating precise and engaging YouTube video chapters. "
+                "You are a seasoned expert in creating precise and engaging YouTube video chapters for a youtuber called Harkirat Singh, He is a software developer and sells courses on 100xdevs.com . "
                 "Based on the provided transcript chunk, generate a concise and relevant chapter title. "
                 "Return 'None' if there isn't a significant topic shift or noteworthy content in this segment. "
-                "Only return the chapter title. No need for additional details. "
+                "Only return the chapter title without quotation marks. No need for additional details. "
+                "The given video is about {title}. "
+                "The first chapter title should start from the beginning of the video. If the first chunk doesn't contain a significant topic shift, return one of the following Introduction or Context for the Video, or Upcoming in the video. "
                 "Consider the following details: "
                 "This is chunk {chunk_index} of {total_chunks}, covering the time from {chunk_start_time} to {chunk_end_time}. "
                 "Transcript: {chunk}. "
@@ -83,6 +93,7 @@ if url:
             with ThreadPoolExecutor() as executor:
                 future_to_chunk = {executor.submit(
                     process_chunk, 
+                    title,
                     chunk, 
                     i, 
                     len(documents),
@@ -108,11 +119,12 @@ if url:
 
             st.subheader("Generated Chapters:")
             for start_time, end_time, title in chapters:
-                st.write(f"{format_time(start_time)}: {title}")
+                st.text(format_time(start_time) + " " + title)
+                
             
             st.write(f"Total chapters generated: {len(chapters)}")
-            st.write(f"Video duration: {format_time(video_duration)}")
-        
+            
+            st.video(url)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
     else:
