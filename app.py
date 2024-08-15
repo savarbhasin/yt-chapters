@@ -8,12 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
 from pytubefix import YouTube
 
-hide_github_icon = """
-#GithubIcon  {
-  visibility: hidden;
-}
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
+
 
 st.title("YouTube Video Chapter Generator")
 
