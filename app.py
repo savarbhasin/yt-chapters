@@ -14,7 +14,6 @@ st.title("YouTube Video Chapter Generator")
 
 model = ChatGroq(model="llama3-70b-8192")
 
-
 radio = st.radio("Select model:", ["GPT-4o", "Llama3-70b"], index=1)
 
 def get_video_id(url):
