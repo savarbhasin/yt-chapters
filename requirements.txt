@@ -25,3 +25,4 @@ duckduckgo-search
 youtube-transcript-api
 validators==0.28.1
 unstructured
+pytube
