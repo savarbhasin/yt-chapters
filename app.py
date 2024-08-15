@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
 from pytubefix import YouTube
 
+
 st.markdown(
     """
     <style>
