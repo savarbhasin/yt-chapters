@@ -39,7 +39,7 @@ def process_chunk(title,chunk, chunk_index, total_chunks, chunk_start_time, chun
 st.text("Sample Video URL")
 st.code("https://www.youtube.com/watch?v=vCPKIw43NFU", language="string")
 
-url = st.text_input("Enter YouTube video URL:")
+url = st.text_input("Enter YouTube video URL (currently supports videos with transcript):")
 
 if radio == "GPT-4o":
     openapi_key = st.text_input("For GPT-4o model, please enter your OpenAI API key:", type="password")
