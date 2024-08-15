@@ -8,8 +8,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
 from pytubefix import YouTube
 
-
-
 st.title("YouTube Video Chapter Generator")
 
 model = ChatGroq(model="llama3-70b-8192")
