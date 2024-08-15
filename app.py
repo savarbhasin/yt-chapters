@@ -6,7 +6,6 @@ from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
-from pytubefix import YouTube
 
 st.markdown(
     """
@@ -65,8 +64,8 @@ if st.button("Generate Chapters"):
         st.stop()
     video_id = get_video_id(url)
     if video_id:
-        yt = YouTube(url)
-        title = yt.title
+        # yt = YouTube(url)
+        # title = yt.title
         try:
             transcript = yta.get_transcript(video_id, languages=['en', 'hi'])
             
