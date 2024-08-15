@@ -15,14 +15,9 @@ langchain_chroma
 langchain-groq
 fastapi
 uvicorn
-langserve
 sse_starlette
 streamlit 
-arxiv 
-wikipedia
 langchainhub
-duckduckgo-search
 youtube-transcript-api
 validators==0.28.1
-unstructured
-pytube
+pytubefix
