@@ -7,8 +7,9 @@ from langchain.prompts import PromptTemplate
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
 from pytubefix import YouTube
+
 hide_github_icon = """
-#MainMenu {
+#GithubIcon  {
   visibility: hidden;
 }
 """
