@@ -60,7 +60,7 @@ if radio == "GPT-4o":
     model = ChatOpenAI(model="gpt-4o", api_key=openapi_key)
 
 
-if url:
+if st.button("Generate Chapters (currently works only with transcribed videos)"):
     if radio == "GPT-4o" and not openapi_key:
         st.error("Please enter your OpenAI API key.")
         st.stop()
