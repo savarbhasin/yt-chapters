@@ -36,7 +36,7 @@ def format_time(seconds):
     seconds = int(seconds % 60)
     return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
-def process_chunk(title,chunk, chunk_index, total_chunks, chunk_start_time, chunk_end_time):
+def process_chunk(chunk, chunk_index, total_chunks, chunk_start_time, chunk_end_time):
     chain = prompt | model
     response = chain.invoke({
         "chunk": chunk,
