@@ -7,6 +7,9 @@ from langchain.prompts import PromptTemplate
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
 
+st.header("Create chapters for your youtube videos in a single click using ai! Generated faster than any other tool on the internet")
+
+st.text("Using Groq/OpenAI generate concise chapter titles for youtube videos")
 
 st.markdown(
     """
