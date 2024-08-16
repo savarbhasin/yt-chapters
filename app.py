@@ -7,6 +7,7 @@ from langchain.prompts import PromptTemplate
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langchain_openai import ChatOpenAI
 
+
 st.markdown(
     """
     <style>
