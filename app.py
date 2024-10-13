@@ -70,7 +70,7 @@ if st.button("Generate Chapters"):
         # yt = YouTube(url)
         # title = yt.title
         try:
-            transcript = yta.get_transcript(video_id, languages=['en', 'hi'], proxies={"http": "http://74b06feca5354615a453535c0139f3ac:@api.zyte.com:8011/","https": "http://74b06feca5354615a453535c0139f3ac:@api.zyte.com:8011/",})
+            transcript = yta.get_transcript(video_id, languages=['en', 'hi'])
             
             data = [t['text'] for t in transcript]
             times = [t['start'] for t in transcript]
